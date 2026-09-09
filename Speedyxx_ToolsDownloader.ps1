@@ -1,4 +1,4 @@
-# Requires Version 7.0
+#Requires -Version 7.0
 
 [CmdletBinding()]
 param()
@@ -121,7 +121,7 @@ $HttpClient.Timeout = [TimeSpan]::FromMinutes(10)
 # Reuse the same connection/client for every download
 $HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(
     'Speedyxx-ToolsDownloader/2.0'
-)
+}
 function Invoke-FileDownload {
     param(
         [string]$Url,
@@ -130,75 +130,43 @@ function Invoke-FileDownload {
     )
 
     $filename = Get-FilenameFromUrl -Url $Url
-
     if ([string]::IsNullOrWhiteSpace($filename)) {
         Write-Host "    ${Red}✗ URL has no downloadable filename: $Url${Reset}"
         $FailedList.Add($Url)
         return
     }
-
-    $isZip = $filename -match '\.zip$'
+    $isZip    = $filename -match '\.zip$'
 
     if ($isZip) {
-        $baseName   = [System.IO.Path]::GetFileNameWithoutExtension($filename)
-        $tempZip    = Join-Path $GroupFolder $filename
+        $baseName = [System.IO.Path]::GetFileNameWithoutExtension($filename)
+        $tempZip = Join-Path $GroupFolder $filename
         $extractDir = Join-Path $GroupFolder $baseName
 
+        # Avoid overwriting another tool with the same filename.
         $n = 2
-        while (Test-Path $tempZip -or Test-Path $extractDir) {
+        while (Test-Path $tempZip) {
             $tempZip = Join-Path $GroupFolder ("{0}_{1}.zip" -f $baseName, $n)
             $extractDir = Join-Path $GroupFolder ("{0}_{1}" -f $baseName, $n)
             $n++
         }
-
         Write-Host "    ${DkOrange}↓ ${Orange}$filename${Reset} " -NoNewline
-
         try {
-            $response = $HttpClient.GetAsync(
-                $Url,
-                [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
-            ).GetAwaiter().GetResult()
-
-            $response.EnsureSuccessStatusCode()
-
-            $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
-            $fileStream = [System.IO.File]::Create($tempZip)
-
-            try {
-                $stream.CopyToAsync($fileStream).GetAwaiter().GetResult()
-            }
-            finally {
-                $fileStream.Dispose()
-                $stream.Dispose()
-                $response.Dispose()
-            }
-
+            Invoke-WebRequest -Uri $Url -OutFile $tempZip -UseBasicParsing -ErrorAction Stop
             $null = New-Item -ItemType Directory -Path $extractDir -Force
-
-            [System.IO.Compression.ZipFile]::ExtractToDirectory(
-                $tempZip,
-                $extractDir,
-                $true
-            )
-
+            Expand-Archive -Path $tempZip -DestinationPath $extractDir -Force
             Remove-Item -Path $tempZip -Force
-
             Write-Host "${Green}✓${Reset}"
-        }
-        catch {
+        } catch {
             Write-Host "${Red}✗${Reset}"
             $FailedList.Add($Url)
-
-            if (Test-Path $tempZip) {
-                Remove-Item $tempZip -Force -ErrorAction SilentlyContinue
-            }
+            if (Test-Path $tempZip) { Remove-Item -Path $tempZip -Force -ErrorAction SilentlyContinue }
         }
-    }
-    else {
-        $destPath  = Join-Path $GroupFolder $filename
-        $baseName  = [System.IO.Path]::GetFileNameWithoutExtension($filename)
+    } else {
+        $destPath = Join-Path $GroupFolder $filename
+        $baseName = [System.IO.Path]::GetFileNameWithoutExtension($filename)
         $extension = [System.IO.Path]::GetExtension($filename)
 
+        # Avoid overwriting another tool with the same filename.
         $n = 2
         while (Test-Path $destPath) {
             $destPath = Join-Path $GroupFolder ("{0}_{1}{2}" -f $baseName, $n, $extension)
@@ -206,39 +174,16 @@ function Invoke-FileDownload {
         }
 
         Write-Host "    ${DkOrange}↓ ${Orange}$filename${Reset} " -NoNewline
-
         try {
-            $response = $HttpClient.GetAsync(
-                $Url,
-                [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
-            ).GetAwaiter().GetResult()
-
-            $response.EnsureSuccessStatusCode()
-
-            $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
-            $fileStream = [System.IO.File]::Create($destPath)
-
-            try {
-                $stream.CopyToAsync($fileStream).GetAwaiter().GetResult()
-            }
-            finally {
-                $fileStream.Dispose()
-                $stream.Dispose()
-                $response.Dispose()
-            }
-
+            Invoke-WebRequest -Uri $Url -OutFile $destPath -UseBasicParsing -ErrorAction Stop
             Write-Host "${Green}✓${Reset}"
-        }
-        catch {
+        } catch {
             Write-Host "${Red}✗${Reset}"
             $FailedList.Add($Url)
-
-            if (Test-Path $destPath) {
-                Remove-Item $destPath -Force -ErrorAction SilentlyContinue
-            }
         }
     }
 }
+
 function Show-Banner {
     Clear-Host
 
@@ -453,4 +398,4 @@ if ($failed.Count -gt 0) {
 Write-Host ""
 Write-Host "  ${White}Tools saved to ${Gold}$ssFolder${Reset}"
 Write-Host "  ${Grey}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${Reset}"
-Write-Host ""
+Write-Host "" 
