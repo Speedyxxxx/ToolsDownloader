@@ -79,16 +79,11 @@ $Groups = [ordered]@{
     'Eric Zimmerman' = @(
         'https://download.ericzimmermanstools.com/net9/PECmd.zip'
         'https://download.ericzimmermanstools.com/net9/MFTECmd.zip'
-        'https://download.ericzimmermanstools.com/net9/JLECmd.zip'
         'https://download.ericzimmermanstools.com/net9/SrumECmd.zip'
-        'https://download.ericzimmermanstools.com/net9/bstrings.zip'
         'https://download.ericzimmermanstools.com/net9/RecentFileCacheParser.zip'
-        'https://download.ericzimmermanstools.com/net9/JumpListExplorer.zip'
         'https://download.ericzimmermanstools.com/net9/RegistryExplorer.zip'
-        'https://download.ericzimmermanstools.com/net9/ShellBagsExplorer.zip'
         'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
         'https://download.ericzimmermanstools.com/AppCompatCacheParser.zip'
-        'https://builds.dotnet.microsoft.com/dotnet/Sdk/9.0.308/dotnet-sdk-9.0.308-win-x64.exe'
     )
     'Generic Tools' = @(
         'https://github.com/winsiderss/si-builds/releases/download/4.0.26245.218/systeminformer-build-canary-setup.exe'
