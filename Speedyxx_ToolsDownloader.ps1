@@ -145,14 +145,14 @@ function Invoke-FileDownload {
         $tempZip    = Join-Path $GroupFolder $filename
         $extractDir = Join-Path $GroupFolder $baseName
 
-        $n = 2
-        while (Test-Path $tempZip -or Test-Path $extractDir) {
-            $tempZip = Join-Path $GroupFolder ("{0}_{1}.zip" -f $baseName, $n)
-            $extractDir = Join-Path $GroupFolder ("{0}_{1}" -f $baseName, $n)
-            $n++
-        }
+       $n = 2
+    while ((Test-Path $tempZip) -or (Test-Path $extractDir)) {
+    $tempZip = Join-Path $GroupFolder ("{0}_{1}.zip" -f $baseName, $n)
+    $extractDir = Join-Path $GroupFolder ("{0}_{1}" -f $baseName, $n)
+    $n++
+}
 
-        $destPath = $tempZip
+$destPath = $tempZip
     }
     else {
         $baseName  = [System.IO.Path]::GetFileNameWithoutExtension($filename)
@@ -200,7 +200,6 @@ function Invoke-FileDownload {
             $fileStream.Dispose()
             $fileStream = $null
 
-            $extractDir = Join-Path $GroupFolder $baseName
             $null = New-Item -ItemType Directory -Path $extractDir -Force
 
             [System.IO.Compression.ZipFile]::ExtractToDirectory(
@@ -216,6 +215,7 @@ function Invoke-FileDownload {
     }
     catch {
         Write-Host "${Red}✗${Reset}"
+        Write-Host "      ${Gray}$($_.Exception.Message)${Reset}"
         $FailedList.Add($Url)
 
         if ($fileStream) {
