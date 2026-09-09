@@ -18,7 +18,7 @@ $e = [char]27
 $White       = "${e}[38;2;245;245;245m"
 $Grey        = "${e}[38;2;190;190;190m"
 $Gray        = "${e}[38;2;125;125;125m"
-$SpeedyWhite = "${e}[38;2;255;255;255m"
+$SpeedyWhite = "${e}[38;2;255;255;255m"os tj
 
 $Green       = "${e}[38;2;80;220;80m"
 $Red         = "${e}[91m"
@@ -111,7 +111,17 @@ function Get-FilenameFromUrl {
     $path = ([System.Uri]$Url).AbsolutePath
     return [System.Uri]::UnescapeDataString([System.IO.Path]::GetFileName($path))
 }
+# ── Fast sequential HTTP client ───────────────────────────────────────────────
+$HttpHandler = [System.Net.Http.HttpClientHandler]::new()
+$HttpHandler.AutomaticDecompression = [System.Net.DecompressionMethods]::All
 
+$HttpClient = [System.Net.Http.HttpClient]::new($HttpHandler)
+$HttpClient.Timeout = [TimeSpan]::FromMinutes(10)
+
+# Reuse the same connection/client for every download
+$HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(
+    'Speedyxx-ToolsDownloader/2.0'
+)
 function Invoke-FileDownload {
     param(
         [string]$Url,
@@ -120,43 +130,75 @@ function Invoke-FileDownload {
     )
 
     $filename = Get-FilenameFromUrl -Url $Url
+
     if ([string]::IsNullOrWhiteSpace($filename)) {
         Write-Host "    ${Red}✗ URL has no downloadable filename: $Url${Reset}"
         $FailedList.Add($Url)
         return
     }
-    $isZip    = $filename -match '\.zip$'
+
+    $isZip = $filename -match '\.zip$'
 
     if ($isZip) {
-        $baseName = [System.IO.Path]::GetFileNameWithoutExtension($filename)
-        $tempZip = Join-Path $GroupFolder $filename
+        $baseName   = [System.IO.Path]::GetFileNameWithoutExtension($filename)
+        $tempZip    = Join-Path $GroupFolder $filename
         $extractDir = Join-Path $GroupFolder $baseName
 
-        # Avoid overwriting another tool with the same filename.
         $n = 2
-        while (Test-Path $tempZip) {
+        while (Test-Path $tempZip -or Test-Path $extractDir) {
             $tempZip = Join-Path $GroupFolder ("{0}_{1}.zip" -f $baseName, $n)
             $extractDir = Join-Path $GroupFolder ("{0}_{1}" -f $baseName, $n)
             $n++
         }
+
         Write-Host "    ${DkOrange}↓ ${Orange}$filename${Reset} " -NoNewline
+
         try {
-            Invoke-WebRequest -Uri $Url -OutFile $tempZip -UseBasicParsing -ErrorAction Stop
+            $response = $HttpClient.GetAsync(
+                $Url,
+                [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
+            ).GetAwaiter().GetResult()
+
+            $response.EnsureSuccessStatusCode()
+
+            $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
+            $fileStream = [System.IO.File]::Create($tempZip)
+
+            try {
+                $stream.CopyToAsync($fileStream).GetAwaiter().GetResult()
+            }
+            finally {
+                $fileStream.Dispose()
+                $stream.Dispose()
+                $response.Dispose()
+            }
+
             $null = New-Item -ItemType Directory -Path $extractDir -Force
-            Expand-Archive -Path $tempZip -DestinationPath $extractDir -Force
+
+            [System.IO.Compression.ZipFile]::ExtractToDirectory(
+                $tempZip,
+                $extractDir,
+                $true
+            )
+
             Remove-Item -Path $tempZip -Force
+
             Write-Host "${Green}✓${Reset}"
-        } catch {
+        }
+        catch {
             Write-Host "${Red}✗${Reset}"
             $FailedList.Add($Url)
-            if (Test-Path $tempZip) { Remove-Item -Path $tempZip -Force -ErrorAction SilentlyContinue }
+
+            if (Test-Path $tempZip) {
+                Remove-Item $tempZip -Force -ErrorAction SilentlyContinue
+            }
         }
-    } else {
-        $destPath = Join-Path $GroupFolder $filename
-        $baseName = [System.IO.Path]::GetFileNameWithoutExtension($filename)
+    }
+    else {
+        $destPath  = Join-Path $GroupFolder $filename
+        $baseName  = [System.IO.Path]::GetFileNameWithoutExtension($filename)
         $extension = [System.IO.Path]::GetExtension($filename)
 
-        # Avoid overwriting another tool with the same filename.
         $n = 2
         while (Test-Path $destPath) {
             $destPath = Join-Path $GroupFolder ("{0}_{1}{2}" -f $baseName, $n, $extension)
@@ -164,45 +206,53 @@ function Invoke-FileDownload {
         }
 
         Write-Host "    ${DkOrange}↓ ${Orange}$filename${Reset} " -NoNewline
+
         try {
-            Invoke-WebRequest -Uri $Url -OutFile $destPath -UseBasicParsing -ErrorAction Stop
+            $response = $HttpClient.GetAsync(
+                $Url,
+                [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
+            ).GetAwaiter().GetResult()
+
+            $response.EnsureSuccessStatusCode()
+
+            $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
+            $fileStream = [System.IO.File]::Create($destPath)
+
+            try {
+                $stream.CopyToAsync($fileStream).GetAwaiter().GetResult()
+            }
+            finally {
+                $fileStream.Dispose()
+                $stream.Dispose()
+                $response.Dispose()
+            }
+
             Write-Host "${Green}✓${Reset}"
-        } catch {
+        }
+        catch {
             Write-Host "${Red}✗${Reset}"
             $FailedList.Add($Url)
+
+            if (Test-Path $destPath) {
+                Remove-Item $destPath -Force -ErrorAction SilentlyContinue
+            }
         }
     }
 }
-
 function Show-Banner {
     Clear-Host
 
-    # White stars
-    $w = $SpeedyWhite
-    $r = $Reset
-
-    Write-Host ""
-    Write-Host "                         ${w}✦${r}"
-    Write-Host "              ${w}✦                         ✦${r}"
-    Write-Host ""
-    Write-Host "                    ${w}✦  ✦  ✦${r}"
-    Write-Host "               ${w}✦  ✦  ✦  ✦  ✦${r}"
-    Write-Host "                    ${w}✦  ✦  ✦${r}"
-    Write-Host ""
-    Write-Host "          ${w}✦                              ✦${r}"
-    Write-Host "                         ${w}✦${r}"
-    Write-Host ""
 
     # STARS wordmark
-    Write-Host "${White}${Grey}   ███████╗████████╗ █████╗ ██████╗ ███████╗ ${Reset}"
-    Write-Host "${White}${Grey}   ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔════╝ ${Reset}"
-    Write-Host "${White}${Grey}   ███████╗   ██║   ███████║██████╔╝███████╗ ${Reset}"
-    Write-Host "${White}${Grey}   ╚════██║   ██║   ██╔══██║██╔══██╗╚════██║ ${Reset}"
-    Write-Host "${White}${Grey}   ███████║   ██║   ██║  ██║██║  ██║███████║ ${Reset}"
-    Write-Host "${White}${Grey}   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ${Reset}"
+    Write-Host "${White}${Grey} ███████╗████████╗ █████╗ ██████╗ ███████╗ ${Reset}"
+    Write-Host "${White}${Grey} ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔════╝ ${Reset}"
+    Write-Host "${White}${Grey} ███████╗   ██║   ███████║██████╔╝███████╗ ${Reset}"
+    Write-Host "${White}${Grey} ╚════██║   ██║   ██╔══██║██╔══██╗╚════██║ ${Reset}"
+    Write-Host "${White}${Grey} ███████║   ██║   ██║  ██║██║  ██║███████║ ${Reset}"
+    Write-Host "${White}${Grey} ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ${Reset}"
     Write-Host ""
-    Write-Host "${Gray}                    Tools Downloader from Speedyxx  •  v1.0${Reset}"
-    Write-Host "${White}  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${Reset}"
+    Write-Host "${Gray}   Tools Downloader from Speedyxx  •  v1.0${Reset}"
+    Write-Host "${White}  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${Reset}"
     Write-Host ""
 }
 
