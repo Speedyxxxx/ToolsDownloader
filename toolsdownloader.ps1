@@ -76,15 +76,6 @@ $Groups = [ordered]@{
         'https://www.nirsoft.net/utils/clipboardic.zip'
         'https://www.nirsoft.net/utils/networkusageview-x64.zip'
     )
-    'Eric Zimmerman' = @(
-        'https://download.ericzimmermanstools.com/net9/PECmd.zip'
-        'https://download.ericzimmermanstools.com/net9/MFTECmd.zip'
-        'https://download.ericzimmermanstools.com/net9/SrumECmd.zip'
-        'https://download.ericzimmermanstools.com/net9/RecentFileCacheParser.zip'
-        'https://download.ericzimmermanstools.com/net9/RegistryExplorer.zip'
-        'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
-        'https://download.ericzimmermanstools.com/AppCompatCacheParser.zip'
-    )
     'Generic Tools' = @(
         'https://github.com/winsiderss/si-builds/releases/download/4.0.26245.218/systeminformer-build-canary-setup.exe'
         'https://www.voidtools.com/Everything-1.4.1.1029.x64-Setup.exe'
@@ -99,6 +90,15 @@ $Groups = [ordered]@{
         'https://github.com/Inkenal/TaskParser/releases/download/main/VigilsTaskParser.exe'
         'https://github.com/Sorted1/StormSS-Fuser-Finder/releases/download/Main/Storm.Fuser.Finder.zip'
         'https://github.com/Speedyxxxx/MagnetRamCapture/raw/refs/heads/main/MRCv120.exe'
+    )
+    'Eric Zimmerman' = @(
+        'https://download.ericzimmermanstools.com/net9/PECmd.zip'
+        'https://download.ericzimmermanstools.com/net9/MFTECmd.zip'
+        'https://download.ericzimmermanstools.com/net9/SrumECmd.zip'
+        'https://download.ericzimmermanstools.com/net9/RecentFileCacheParser.zip'
+        'https://download.ericzimmermanstools.com/net9/RegistryExplorer.zip'
+        'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
+        'https://download.ericzimmermanstools.com/AppCompatCacheParser.zip'
     )
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
