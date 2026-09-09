@@ -145,11 +145,11 @@ function Invoke-FileDownload {
         $tempZip    = Join-Path $GroupFolder $filename
         $extractDir = Join-Path $GroupFolder $baseName
 
-       $n = 2
-    while ((Test-Path $tempZip) -or (Test-Path $extractDir)) {
-    $tempZip = Join-Path $GroupFolder ("{0}_{1}.zip" -f $baseName, $n)
-    $extractDir = Join-Path $GroupFolder ("{0}_{1}" -f $baseName, $n)
-    $n++
+$n = 2
+while ((Test-Path $tempZip) -or (Test-Path $extractDir)) {
+$tempZip = Join-Path $GroupFolder ("{0}_{1}.zip" -f $baseName, $n)
+$extractDir = Join-Path $GroupFolder ("{0}_{1}" -f $baseName, $n)
+$n++
 }
 
 $destPath = $tempZip
@@ -166,7 +166,7 @@ $destPath = $tempZip
         }
     }
 
-    Write-Host "    ${DkOrange}↓ ${Orange}$filename${Reset} " -NoNewline
+    Write-Host "    ${White}↓ ${Grey}$filename${Reset} " -NoNewline
 
     $response = $null
     $stream = $null
