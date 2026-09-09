@@ -97,7 +97,6 @@ $Groups = [ordered]@{
     'Generic Tools' = @(
         'https://github.com/winsiderss/si-builds/releases/download/4.0.26245.218/systeminformer-build-canary-setup.exe'
         'https://www.voidtools.com/Everything-1.4.1.1029.x64-Setup.exe'
-        'https://www.dropbox.com/scl/fi/q428cz9l0uq50bg3azh57/AccessData_FTK_Imager_4.7.1.exe?rlkey=o6w5ot98zb3wpo12n4rlwowhb&st=230sgk3i&dl=1'
         'https://raw.githubusercontent.com/Speedyxxxx/AltChecker/main/AltChecker.exe'
         'https://github.com/horsicq/DIE-engine/releases/download/3.10/die_win64_portable_3.10_x64.zip'
         'https://github.com/deathmarine/Luyten/releases/download/v0.5.4_Rebuilt_with_Latest_depenencies/luyten-0.5.4.exe'
@@ -108,6 +107,7 @@ $Groups = [ordered]@{
         'https://github.com/p1aegg/javaw/releases/download/v1.12/P1AE.Javaw.exe'
         'https://github.com/Inkenal/TaskParser/releases/download/main/VigilsTaskParser.exe'
         'https://github.com/Sorted1/StormSS-Fuser-Finder/releases/download/Main/Storm.Fuser.Finder.zip'
+        'https://github.com/Speedyxxxx/MagnetRamCapture/raw/refs/heads/main/MRCv120.exe'
     )
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
