@@ -121,7 +121,7 @@ $HttpClient.Timeout = [TimeSpan]::FromMinutes(10)
 # Reuse the same connection/client for every download
 $HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(
     'Speedyxx-ToolsDownloader/2.0'
-}
+)
 function Invoke-FileDownload {
     param(
         [string]$Url,
