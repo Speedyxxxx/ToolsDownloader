@@ -13,18 +13,18 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 $ProgressPreference = 'SilentlyContinue'
 
 # ── ANSI palette ──────────────────────────────────────────────────────────────
-$e          = [char]27
+$e = [char]27
 
-$White      = "${e}[38;2;245;245;245m"   # Main text
-$Grey       = "${e}[38;2;190;190;190m"   # Secondary text
-$Gray       = "${e}[38;2;125;125;125m"   # Dim text
-$SpeedyWhite = "${e}[38;2;255;255;255m"  # Stars / highlights
+$White       = "${e}[38;2;245;245;245m"
+$Grey        = "${e}[38;2;190;190;190m"
+$Gray        = "${e}[38;2;125;125;125m"
+$SpeedyWhite = "${e}[38;2;255;255;255m"
 
-$Green      = "${e}[38;2;80;220;80m"
-$Red        = "${e}[91m"
+$Green       = "${e}[38;2;80;220;80m"
+$Red         = "${e}[91m"
 
-$Reset      = "${e}[0m"
-$Bold       = "${e}[1m"
+$Reset       = "${e}[0m"
+$Bold        = "${e}[1m"
 
 # ── Tool groups ───────────────────────────────────────────────────────────────
 $Groups = [ordered]@{
@@ -318,8 +318,75 @@ foreach ($groupName in $selectedNames) {
     }
 }
 
+# ── Automatic forensic tools ──────────────────────────────────────────────────
+if ($ssFolder -eq 'C:\ss1') {
+    Write-Host ""
+    Write-Host "  ${White}Running automatic tools for C:\ss1...${Reset}"
+    Write-Host ""
+
+    # Open shell:recent
+    Write-Host "  ${Grey}Opening Recent Items...${Reset}"
+    Start-Process explorer.exe -ArgumentList 'shell:recent'
+
+    # Find downloaded tools
+    $mfteCmd = Get-ChildItem -Path $ssFolder -Filter 'MFTECmd.exe' -Recurse -File -ErrorAction SilentlyContinue |
+        Select-Object -First 1
+
+    $appCompat = Get-ChildItem -Path $ssFolder -Filter 'AppCompatCacheParser.exe' -Recurse -File -ErrorAction SilentlyContinue |
+        Select-Object -First 1
+
+    $srum = Get-ChildItem -Path $ssFolder -Filter 'SrumECmd.exe' -Recurse -File -ErrorAction SilentlyContinue |
+        Select-Object -First 1
+
+    # MFTECmd
+    if ($mfteCmd) {
+        Write-Host "  ${Grey}Starting MFTECmd...${Reset}"
+
+        $cmd = "cd /d `"$($mfteCmd.Directory.FullName)`" && MFTECmd.exe --at -f C:`$MFT --csv ."
+
+        Start-Process cmd.exe `
+            -Verb RunAs `
+            -ArgumentList "/k $cmd"
+    }
+    else {
+        Write-Host "  ${Red}MFTECmd.exe not found.${Reset}"
+    }
+
+    # AppCompatCacheParser
+    if ($appCompat) {
+        Write-Host "  ${Grey}Starting AppCompatCacheParser...${Reset}"
+
+        $cmd = "cd /d `"$($appCompat.Directory.FullName)`" && AppCompatCacheParser.exe --csv ."
+
+        Start-Process cmd.exe `
+            -Verb RunAs `
+            -ArgumentList "/k $cmd"
+    }
+    else {
+        Write-Host "  ${Red}AppCompatCacheParser.exe not found.${Reset}"
+    }
+
+    # SrumECmd
+    if ($srum) {
+        Write-Host "  ${Grey}Starting SrumECmd...${Reset}"
+
+        $cmd = "cd /d `"$($srum.Directory.FullName)`" && SrumECmd.exe -f C:\Windows\System32\sru\SRUDB.dat --csv ."
+
+        Start-Process cmd.exe `
+            -Verb RunAs `
+            -ArgumentList "/k $cmd"
+    }
+    else {
+        Write-Host "  ${Red}SrumECmd.exe not found.${Reset}"
+    }
+
+    Write-Host ""
+    Write-Host "  ${Green}✓ Automatic tools launched.${Reset}"
+}
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 $succeeded = $totalSelected - $failed.Count
+
 Write-Host ""
 Write-Host "  ${White}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${Reset}"
 Write-Host "  ${Green}✓ Downloaded : $succeeded / $totalSelected${Reset}"
