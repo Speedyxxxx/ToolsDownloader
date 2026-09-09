@@ -146,7 +146,7 @@ function Invoke-FileDownload {
         $extractDir = Join-Path $GroupFolder $baseName
 
         $n = 2
-        while ((Test-Path $tempZip) -or (Test-Path $extractDir)) {
+        while (Test-Path $tempZip -or Test-Path $extractDir) {
             $tempZip = Join-Path $GroupFolder ("{0}_{1}.zip" -f $baseName, $n)
             $extractDir = Join-Path $GroupFolder ("{0}_{1}" -f $baseName, $n)
             $n++
@@ -166,20 +166,22 @@ function Invoke-FileDownload {
         }
     }
 
-    Write-Host "    ${White}↓ ${Grey}$filename${Reset} " -NoNewline
+    Write-Host "    ${DkOrange}↓ ${Orange}$filename${Reset} " -NoNewline
 
     $response = $null
     $stream = $null
     $fileStream = $null
 
     try {
-    $response = $HttpClient.GetAsync(
-    $Url,
-    [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
-    ).GetAwaiter().GetResult()
-    $response.EnsureSuccessStatusCode()
-    $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
-    
+        $response = $HttpClient.GetAsync(
+            $Url,
+            [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
+        ).GetAwaiter().GetResult()
+
+        $response.EnsureSuccessStatusCode()
+
+        $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
+
         $fileStream = [System.IO.FileStream]::new(
             $destPath,
             [System.IO.FileMode]::Create,
@@ -198,6 +200,7 @@ function Invoke-FileDownload {
             $fileStream.Dispose()
             $fileStream = $null
 
+            $extractDir = Join-Path $GroupFolder $baseName
             $null = New-Item -ItemType Directory -Path $extractDir -Force
 
             [System.IO.Compression.ZipFile]::ExtractToDirectory(
@@ -213,7 +216,6 @@ function Invoke-FileDownload {
     }
     catch {
         Write-Host "${Red}✗${Reset}"
-        Write-Host "      ${Gray}$($_.Exception.Message)${Reset}"
         $FailedList.Add($Url)
 
         if ($fileStream) {
