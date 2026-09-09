@@ -300,7 +300,7 @@ Write-Host ""
 Write-Host "  ${White}Download mode:${Reset}"
 Write-Host ""
 Write-Host "    ${Grey}[A]${Gray}  All tools ${Gray}($totalTools files)${Reset}"
-Write-Host "    ${Grey[C]${Gray}  Choose specific groups${Reset}"
+Write-Host "    ${Grey}[C]${Gray}  Choose specific groups${Reset}"
 Write-Host ""
 $mode = (Read-Host "  >").Trim().ToUpper()
 
