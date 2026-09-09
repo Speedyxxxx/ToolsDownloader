@@ -14,17 +14,15 @@ $ProgressPreference = 'SilentlyContinue'
 
 # ── ANSI palette ──────────────────────────────────────────────────────────────
 $e          = [char]27
-$Orange     = "${e}[38;2;255;140;0m"
-$Gold       = "${e}[38;2;255;255;255m"
-$DkOrange   = "${e}[38;2;200;90;10m"
-$MarsRed    = "${e}[38;2;180;55;15m"
-$MarsOrange = "${e}[38;2;210;115;55m"
-$MarsCrater = "${e}[38;2;120;30;8m"
-$Gray       = "${e}[38;2;155;155;155m"
-$White      = "${e}[38;2;255;255;255m"
-$Grey       = $Gray
+
+$White      = "${e}[38;2;245;245;245m"   # Main text
+$Grey       = "${e}[38;2;190;190;190m"   # Secondary text
+$Gray       = "${e}[38;2;125;125;125m"   # Dim text
+$SpeedyWhite = "${e}[38;2;255;255;255m"  # Stars / highlights
+
 $Green      = "${e}[38;2;80;220;80m"
 $Red        = "${e}[91m"
+
 $Reset      = "${e}[0m"
 $Bold       = "${e}[1m"
 
@@ -180,33 +178,38 @@ function Invoke-FileDownload {
 function Show-Banner {
     Clear-Host
 
-    # Mars planet (rust reds with crater spots)
-    $mr = $MarsRed; $mo = $MarsOrange; $mc = $MarsCrater; $r = $Reset
+    # White star
+    $w = $SpeedyWhite
+    $r = $Reset
+
     Write-Host ""
-    Write-Host "             ${mr}▄▄█████████████▄▄${r}"
-    Write-Host "           ${mr}███${mo}▓▓░░░░░░░░░▓▓${mr}███${r}"
-    Write-Host "         ${mr}████${mo}░░░${mc}▓▓▓${mo}░░░░░░░░░${mr}████${r}"
-    Write-Host "        ${mr}███${mo}░░░░░░░░░░${mc}▓▓${mo}░░░░░${mr}███${r}"
-    Write-Host "       ${mr}███${mo}░░${mc}▓▓${mo}░░░░░░░░░░░░░░${mr}███${r}"
-    Write-Host "      ${mr}███${mo}░░░░░░░░${mc}▓▓${mo}░░░░░░░░░${mr}███${r}"
-    Write-Host "      ${mr}███${mo}░░░${mc}▓${mo}░░░░░░░░░${mc}▓▓${mo}░░░${mr}███${r}"
-    Write-Host "       ${mr}███${mo}░░░░░░${mc}▓${mo}░░░░░░░░░░${mr}███${r}"
-    Write-Host "        ${mr}███${mo}░░░░░░░░░░░░░░░${mr}███${r}"
-    Write-Host "         ${mr}████████████████████${r}"
+    Write-Host "                         ${w}✦${r}"
+    Write-Host "                        ${w}✦✦✦${r}"
+    Write-Host "                      ${w}✦✦✦✦✦${r}"
+    Write-Host "                  ${w}✦✦✦✦✦✦✦✦✦${r}"
+    Write-Host "                ${w}✦✦✦✦✦✦✦✦✦✦✦${r}"
+    Write-Host "          ${w}✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦${r}"
+    Write-Host "            ${w}✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦${r}"
+    Write-Host "                ${w}✦✦✦✦✦✦✦✦✦✦✦${r}"
+    Write-Host "                  ${w}✦✦✦✦✦✦✦✦✦${r}"
+    Write-Host "                    ${w}✦✦✦✦✦${r}"
+    Write-Host "                      ${w}✦✦✦${r}"
+    Write-Host "                       ${w}✦${r}"
     Write-Host ""
 
-    # Speedyxx wordmark — white
-    Write-Host "${White}   ███████╗██████╗ ███████╗███████╗██████╗ ██╗   ██╗██╗  ██╗██╗  ██╗${Reset}"
-    Write-Host "${White}   ██╔════╝██╔══██╗██╔════╝██╔════╝╚════██╗╚██╗ ██╔╝╚██╗██╔╝╚██╗██╔╝${Reset}"
-    Write-Host "${White}   ███████╗██████╔╝█████╗  █████╗   █████╔╝ ╚████╔╝  ╚███╔╝  ╚███╔╝ ${Reset}"
-    Write-Host "${White}   ╚════██║██╔═══╝ ██╔══╝  ██╔══╝   ██╔══╝   ╚██╔╝   ██╔██╗  ██╔██╗ ${Reset}"
-    Write-Host "${White}   ███████║██║     ███████╗███████╗ ██║       ██║   ██╔╝ ██╗██╔╝ ██╗${Reset}"
-    Write-Host "${White}   ╚══════╝╚═╝     ╚══════╝╚══════╝ ╚═╝       ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝${Reset}"
+    # STARBYTE wordmark
+    Write-Host "${White}${Grey}   ███████╗████████╗ █████╗ ██████╗ ██████╗ ██╗   ██╗████████╗███████╗ ${Reset}"
+    Write-Host "${White}${Grey}   ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝╚══██╔══╝██╔════╝ ${Reset}"
+    Write-Host "${White}${Grey}   ███████╗   ██║   ███████║██████╔╝██████╔╝ ╚████╔╝    ██║   █████╗   ${Reset}"
+    Write-Host "${White}${Grey}   ╚════██║   ██║   ██╔══██║██╔══██╗██╔══██╗  ╚██╔╝     ██║   ██╔══╝   ${Reset}"
+    Write-Host "${White}${Grey}   ███████║   ██║   ██║  ██║██████╔╝██████╔╝   ██║      ██║   ███████╗ ${Reset}"
+    Write-Host "${White}${Grey}   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═════╝    ╚═╝      ╚═╝   ╚══════╝ ${Reset}"
     Write-Host ""
     Write-Host "${Gray}                    Tools Downloader from Speedyxx  •  v1.0${Reset}"
     Write-Host "${White}  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${Reset}"
     Write-Host ""
 }
+
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 Show-Banner
