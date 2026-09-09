@@ -117,11 +117,12 @@ $HttpHandler.AutomaticDecompression = [System.Net.DecompressionMethods]::All
 
 $HttpClient = [System.Net.Http.HttpClient]::new($HttpHandler)
 $HttpClient.Timeout = [TimeSpan]::FromMinutes(10)
-
-# Reuse the same connection/client for every download
 $HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(
     'Speedyxx-ToolsDownloader/2.0'
 )
+
+# Larger buffer = less I/O overhead for larger downloads
+$CopyBufferSize = 65536
 function Invoke-FileDownload {
     param(
         [string]$Url,
@@ -151,91 +152,92 @@ function Invoke-FileDownload {
             $n++
         }
 
-        Write-Host "    ${DkOrange}↓ ${Orange}$filename${Reset} " -NoNewline
-
-        try {
-            $response = $HttpClient.GetAsync(
-                $Url,
-                [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
-            ).GetAwaiter().GetResult()
-
-            $response.EnsureSuccessStatusCode()
-
-            $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
-            $fileStream = [System.IO.File]::Create($tempZip)
-
-            try {
-                $stream.CopyToAsync($fileStream).GetAwaiter().GetResult()
-            }
-            finally {
-                $fileStream.Dispose()
-                $stream.Dispose()
-                $response.Dispose()
-            }
-
-            $null = New-Item -ItemType Directory -Path $extractDir -Force
-
-            [System.IO.Compression.ZipFile]::ExtractToDirectory(
-                $tempZip,
-                $extractDir,
-                $true
-            )
-
-            Remove-Item -Path $tempZip -Force
-
-            Write-Host "${Green}✓${Reset}"
-        }
-        catch {
-            Write-Host "${Red}✗${Reset}"
-            $FailedList.Add($Url)
-
-            if (Test-Path $tempZip) {
-                Remove-Item $tempZip -Force -ErrorAction SilentlyContinue
-            }
-        }
+        $destPath = $tempZip
     }
     else {
-        $destPath  = Join-Path $GroupFolder $filename
         $baseName  = [System.IO.Path]::GetFileNameWithoutExtension($filename)
         $extension = [System.IO.Path]::GetExtension($filename)
+        $destPath  = Join-Path $GroupFolder $filename
 
         $n = 2
         while (Test-Path $destPath) {
             $destPath = Join-Path $GroupFolder ("{0}_{1}{2}" -f $baseName, $n, $extension)
             $n++
         }
+    }
 
-        Write-Host "    ${DkOrange}↓ ${Orange}$filename${Reset} " -NoNewline
+    Write-Host "    ${DkOrange}↓ ${Orange}$filename${Reset} " -NoNewline
 
-        try {
-            $response = $HttpClient.GetAsync(
-                $Url,
-                [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
-            ).GetAwaiter().GetResult()
+    $response = $null
+    $stream = $null
+    $fileStream = $null
 
-            $response.EnsureSuccessStatusCode()
+    try {
+        $response = $HttpClient.GetAsync(
+            $Url,
+            [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
+        ).GetAwaiter().GetResult()
 
-            $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
-            $fileStream = [System.IO.File]::Create($destPath)
+        $response.EnsureSuccessStatusCode()
 
-            try {
-                $stream.CopyToAsync($fileStream).GetAwaiter().GetResult()
-            }
-            finally {
-                $fileStream.Dispose()
-                $stream.Dispose()
-                $response.Dispose()
-            }
+        $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
 
-            Write-Host "${Green}✓${Reset}"
+        $fileStream = [System.IO.FileStream]::new(
+            $destPath,
+            [System.IO.FileMode]::Create,
+            [System.IO.FileAccess]::Write,
+            [System.IO.FileShare]::None,
+            $CopyBufferSize,
+            [System.IO.FileOptions]::SequentialScan
+        )
+
+        $stream.CopyToAsync(
+            $fileStream,
+            $CopyBufferSize
+        ).GetAwaiter().GetResult()
+
+        if ($isZip) {
+            $fileStream.Dispose()
+            $fileStream = $null
+
+            $extractDir = Join-Path $GroupFolder $baseName
+            $null = New-Item -ItemType Directory -Path $extractDir -Force
+
+            [System.IO.Compression.ZipFile]::ExtractToDirectory(
+                $destPath,
+                $extractDir,
+                $true
+            )
+
+            Remove-Item -Path $destPath -Force
         }
-        catch {
-            Write-Host "${Red}✗${Reset}"
-            $FailedList.Add($Url)
 
-            if (Test-Path $destPath) {
-                Remove-Item $destPath -Force -ErrorAction SilentlyContinue
-            }
+        Write-Host "${Green}✓${Reset}"
+    }
+    catch {
+        Write-Host "${Red}✗${Reset}"
+        $FailedList.Add($Url)
+
+        if ($fileStream) {
+            $fileStream.Dispose()
+            $fileStream = $null
+        }
+
+        if (Test-Path $destPath) {
+            Remove-Item $destPath -Force -ErrorAction SilentlyContinue
+        }
+    }
+    finally {
+        if ($fileStream) {
+            $fileStream.Dispose()
+        }
+
+        if ($stream) {
+            $stream.Dispose()
+        }
+
+        if ($response) {
+            $response.Dispose()
         }
     }
 }
