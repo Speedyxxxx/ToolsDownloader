@@ -41,8 +41,8 @@ $Bold        = "${e}[1m"
 # ── Tool groups ───────────────────────────────────────────────────────────────
 $Groups = [ordered]@{
     'Orbdiff' = @(
-        'https://github.com/Orbdiff/BAMReveal/releases/download/v1.3.1/BAMReveal.exe'
         'https://github.com/Orbdiff/PrefetchView/releases/download/v1.6.8/pv++.exe'
+        'https://github.com/Orbdiff/BAMReveal/releases/download/v1.3.1/BAMReveal.exe'
         'https://github.com/Orbdiff/MFT-HardLink/releases/download/v1.2/HardLink.exe'
         'https://github.com/Orbdiff/Fileless/releases/download/v1.3/fileless.exe'
         'https://github.com/Orbdiff/DPS-Analyzer/releases/download/v1.1/dpsanalyzer.exe'
@@ -95,6 +95,7 @@ $Groups = [ordered]@{
         'https://github.com/Speedyxxxx/MagnetRamCapture/raw/refs/heads/main/MRCv120.exe'
         'https://mh-nexus.de/downloads/HxDPortableSetup.zip'
         'https://download.sysinternals.com/files/Autoruns.zip'
+        'https://github.com/Velocidex/velociraptor/releases/download/v0.77.2/velociraptor-v0.77.2-windows-amd64.exe'
     )
     'Eric Zimmerman' = @(
         'https://download.ericzimmermanstools.com/net9/PECmd.zip'
@@ -104,6 +105,7 @@ $Groups = [ordered]@{
         'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
         'https://download.ericzimmermanstools.com/AppCompatCacheParser.zip'
         'https://download.ericzimmermanstools.com/net9/ShellBagsExplorer.zip'
+        'https://download.ericzimmermanstools.com/net9/bstrings.zip'
     )
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
