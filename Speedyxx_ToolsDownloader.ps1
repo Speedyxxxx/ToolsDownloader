@@ -173,11 +173,7 @@ $destPath = $tempZip
     $fileStream = $null
 
     try {
-        $response = $HttpClient.GetAsync(
-            $Url,
-            [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
-        ).GetAwaiter().GetResult()
-
+     $response = $HttpClient.GetAsync($Url).GetAwaiter().GetResult()
         $response.EnsureSuccessStatusCode()
 
         $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
