@@ -174,7 +174,9 @@ $destPath = $tempZip
 
     try {
     $response = $HttpClient.GetAsync($Url).GetAwaiter().GetResult()
-
+    $response.EnsureSuccessStatusCode()
+    $stream = $response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()
+    
         $fileStream = [System.IO.FileStream]::new(
             $destPath,
             [System.IO.FileMode]::Create,
