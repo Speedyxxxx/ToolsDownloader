@@ -51,6 +51,8 @@ $Groups = [ordered]@{
         'https://github.com/Orbdiff/InjGen/releases/download/fork/InjGen.exe'
         'https://github.com/Orbdiff/AmcacheParser/releases/download/v1.0/AmcacheParser.exe'
         'https://github.com/Orbdiff/UserAssistView/releases/download/v1.0/UserAssistView.exe'
+        'https://github.com/Orbdiff/USBDetector/releases/download/v1.1/USBDetector.exe'
+        'https://github.com/Orbdiff/MFTParser/releases/download/v0.1/mftparser.exe'
     )
     'Spokwn' = @(
         'https://github.com/spokwn/JournalTrace/releases/latest/download/JournalTrace.exe'
@@ -75,6 +77,7 @@ $Groups = [ordered]@{
         'https://www.nirsoft.net/utils/alternatestreamview-x64.zip'
         'https://www.nirsoft.net/utils/clipboardic.zip'
         'https://www.nirsoft.net/utils/networkusageview-x64.zip'
+        'https://www.nirsoft.net/utils/usbdeview-x64.zip'
     )
     'Generic Tools' = @(
         'https://github.com/winsiderss/si-builds/releases/download/4.0.26245.218/systeminformer-build-canary-setup.exe'
@@ -90,15 +93,17 @@ $Groups = [ordered]@{
         'https://github.com/Inkenal/TaskParser/releases/download/main/VigilsTaskParser.exe'
         'https://github.com/Sorted1/StormSS-Fuser-Finder/releases/download/Main/Storm.Fuser.Finder.zip'
         'https://github.com/Speedyxxxx/MagnetRamCapture/raw/refs/heads/main/MRCv120.exe'
+        'https://mh-nexus.de/downloads/HxDPortableSetup.zip'
+        'https://download.sysinternals.com/files/Autoruns.zip'
     )
     'Eric Zimmerman' = @(
         'https://download.ericzimmermanstools.com/net9/PECmd.zip'
-        'https://download.ericzimmermanstools.com/net9/MFTECmd.zip'
         'https://download.ericzimmermanstools.com/net9/SrumECmd.zip'
         'https://download.ericzimmermanstools.com/net9/RecentFileCacheParser.zip'
         'https://download.ericzimmermanstools.com/net9/RegistryExplorer.zip'
         'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
         'https://download.ericzimmermanstools.com/AppCompatCacheParser.zip'
+        'https://download.ericzimmermanstools.com/net9/ShellBagsExplorer.zip'
     )
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
@@ -411,20 +416,6 @@ if ($ssFolder -eq 'C:\ss1') {
 
     $srum = Get-ChildItem -Path $ssFolder -Filter 'SrumECmd.exe' -Recurse -File -ErrorAction SilentlyContinue |
         Select-Object -First 1
-
-    # MFTECmd
-    if ($mfteCmd) {
-        Write-Host "  ${Grey}Starting MFTECmd...${Reset}"
-
-        $cmd = "cd /d `"$($mfteCmd.Directory.FullName)`" && MFTECmd.exe --at -f C:`$MFT --csv ."
-
-        Start-Process cmd.exe `
-            -Verb RunAs `
-            -ArgumentList "/k $cmd"
-    }
-    else {
-        Write-Host "  ${Red}MFTECmd.exe not found.${Reset}"
-    }
 
     # AppCompatCacheParser
     if ($appCompat) {
