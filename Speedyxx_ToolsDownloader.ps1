@@ -90,7 +90,6 @@ $Groups = [ordered]@{
         'https://download.sysinternals.com/files/TCPView.zip'
         'https://github.com/Yamato-Security/hayabusa/releases/download/v3.10.0/hayabusa-3.10.0-win-x64.zip'
         'https://github.com/Inkenal/RegistryScanner/releases/download/main/RegistryScanner.exe'
-        'https://www.majorgeeks.com/index.php?ct=files&action=download'
         'https://github.com/p1aegg/javaw/releases/download/v1.12/P1AE.Javaw.exe'
         'https://github.com/Inkenal/TaskParser/releases/download/main/VigilsTaskParser.exe'
         'https://github.com/Sorted1/StormSS-Fuser-Finder/releases/download/Main/Storm.Fuser.Finder.zip'
@@ -178,32 +177,29 @@ function Invoke-FileDownload {
 function Show-Banner {
     Clear-Host
 
-    # White star
+    # White stars
     $w = $SpeedyWhite
     $r = $Reset
 
     Write-Host ""
     Write-Host "                         ${w}✦${r}"
-    Write-Host "                        ${w}✦✦✦${r}"
-    Write-Host "                      ${w}✦✦✦✦✦${r}"
-    Write-Host "                  ${w}✦✦✦✦✦✦✦✦✦${r}"
-    Write-Host "                ${w}✦✦✦✦✦✦✦✦✦✦✦${r}"
-    Write-Host "          ${w}✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦${r}"
-    Write-Host "            ${w}✦✦✦✦✦✦✦✦✦✦✦✦✦✦✦${r}"
-    Write-Host "                ${w}✦✦✦✦✦✦✦✦✦✦✦${r}"
-    Write-Host "                  ${w}✦✦✦✦✦✦✦✦✦${r}"
-    Write-Host "                    ${w}✦✦✦✦✦${r}"
-    Write-Host "                      ${w}✦✦✦${r}"
-    Write-Host "                       ${w}✦${r}"
+    Write-Host "              ${w}✦                         ✦${r}"
+    Write-Host ""
+    Write-Host "                    ${w}✦  ✦  ✦${r}"
+    Write-Host "               ${w}✦  ✦  ✦  ✦  ✦${r}"
+    Write-Host "                    ${w}✦  ✦  ✦${r}"
+    Write-Host ""
+    Write-Host "          ${w}✦                              ✦${r}"
+    Write-Host "                         ${w}✦${r}"
     Write-Host ""
 
-    # STARBYTE wordmark
-    Write-Host "${White}${Grey}   ███████╗████████╗ █████╗ ██████╗ ██████╗ ██╗   ██╗████████╗███████╗ ${Reset}"
-    Write-Host "${White}${Grey}   ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝╚══██╔══╝██╔════╝ ${Reset}"
-    Write-Host "${White}${Grey}   ███████╗   ██║   ███████║██████╔╝██████╔╝ ╚████╔╝    ██║   █████╗   ${Reset}"
-    Write-Host "${White}${Grey}   ╚════██║   ██║   ██╔══██║██╔══██╗██╔══██╗  ╚██╔╝     ██║   ██╔══╝   ${Reset}"
-    Write-Host "${White}${Grey}   ███████║   ██║   ██║  ██║██████╔╝██████╔╝   ██║      ██║   ███████╗ ${Reset}"
-    Write-Host "${White}${Grey}   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═════╝    ╚═╝      ╚═╝   ╚══════╝ ${Reset}"
+    # STARS wordmark
+    Write-Host "${White}${Grey}   ███████╗████████╗ █████╗ ██████╗ ███████╗ ${Reset}"
+    Write-Host "${White}${Grey}   ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔════╝ ${Reset}"
+    Write-Host "${White}${Grey}   ███████╗   ██║   ███████║██████╔╝███████╗ ${Reset}"
+    Write-Host "${White}${Grey}   ╚════██║   ██║   ██╔══██║██╔══██╗╚════██║ ${Reset}"
+    Write-Host "${White}${Grey}   ███████║   ██║   ██║  ██║██║  ██║███████║ ${Reset}"
+    Write-Host "${White}${Grey}   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ${Reset}"
     Write-Host ""
     Write-Host "${Gray}                    Tools Downloader from Speedyxx  •  v1.0${Reset}"
     Write-Host "${White}  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${Reset}"
