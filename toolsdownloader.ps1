@@ -32,10 +32,6 @@ $Grey        = "${e}[38;2;190;190;190m"
 $Gray        = "${e}[38;2;125;125;125m"
 $SpeedyWhite = "${e}[38;2;255;255;255m"
 
-$Orange      = "${e}[38;2;255;150;50m"
-$DkOrange    = "${e}[38;2;215;90;20m"
-$Gold        = "${e}[38;2;245;185;65m"
-
 $Green       = "${e}[38;2;80;220;80m"
 $Red         = "${e}[91m"
 
@@ -296,15 +292,15 @@ Show-Banner
 $ssFolder   = Get-NextSSFolder
 $totalTools = ($Groups.Values | ForEach-Object { $_.Count } | Measure-Object -Sum).Sum
 
-Write-Host "  ${Orange}Output folder  ${Gold}$ssFolder${Reset}"
-Write-Host "  ${Orange}Total tools    ${Gold}$totalTools${Reset} ${Gray}across $($Groups.Count) groups${Reset}"
+Write-Host "  ${White}Output folder  ${Gray}$ssFolder${Reset}"
+Write-Host "  ${Gray}Total tools    ${White}$totalTools${Reset} ${Gray}across $($Groups.Count) groups${Reset}"
 Write-Host ""
 
 # ── Download mode prompt ──────────────────────────────────────────────────────
-Write-Host "  ${Gold}Download mode:${Reset}"
+Write-Host "  ${White}Download mode:${Reset}"
 Write-Host ""
-Write-Host "    ${DkOrange}[A]${Orange}  All tools ${Gray}($totalTools files)${Reset}"
-Write-Host "    ${DkOrange}[C]${Orange}  Choose specific groups${Reset}"
+Write-Host "    ${Grey}[A]${Gray}  All tools ${Gray}($totalTools files)${Reset}"
+Write-Host "    ${Grey[C]${Gray}  Choose specific groups${Reset}"
 Write-Host ""
 $mode = (Read-Host "  >").Trim().ToUpper()
 
@@ -315,11 +311,11 @@ if ($mode -eq 'A') {
 } elseif ($mode -eq 'C') {
     Write-Host ""
     $groupKeys = @($Groups.Keys)
-    Write-Host "  ${Gold}Available groups:${Reset}"
+    Write-Host "  ${White}Available groups:${Reset}"
     Write-Host ""
     for ($i = 0; $i -lt $groupKeys.Count; $i++) {
         $cnt = $Groups[$groupKeys[$i]].Count
-        Write-Host "    ${DkOrange}[$($i + 1)]${Orange} $($groupKeys[$i]) ${Gray}($cnt tools)${Reset}"
+        Write-Host "    ${Gray}[$($i + 1)]${Gray} $($groupKeys[$i]) ${Gray}($cnt tools)${Reset}"
     }
     Write-Host ""
     Write-Host "  ${Gold}Enter group numbers separated by commas ${Gray}(e.g. 1,3,5)${Gold}:${Reset}"
