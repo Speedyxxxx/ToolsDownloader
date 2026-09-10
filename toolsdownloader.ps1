@@ -312,7 +312,7 @@ if ($mode -eq 'A') {
         Write-Host "    ${Gray}[$($i + 1)]${Gray} $($groupKeys[$i]) ${Gray}($cnt tools)${Reset}"
     }
     Write-Host ""
-    Write-Host "  ${Gold}Enter group numbers separated by commas ${Gray}(e.g. 1,3,5)${Gold}:${Reset}"
+    Write-Host "  ${White}Enter group numbers separated by commas ${Gray}(e.g. 1,3,5)${Grey}:${Reset}"
     $raw = (Read-Host "  >").Trim()
 
     foreach ($part in ($raw -split ',')) {
@@ -402,28 +402,8 @@ if ($ssFolder -eq 'C:\ss1') {
     Start-Process explorer.exe -ArgumentList 'shell:recent'
 
     # Find downloaded tools
-    $mfteCmd = Get-ChildItem -Path $ssFolder -Filter 'MFTECmd.exe' -Recurse -File -ErrorAction SilentlyContinue |
-        Select-Object -First 1
-
-    $appCompat = Get-ChildItem -Path $ssFolder -Filter 'AppCompatCacheParser.exe' -Recurse -File -ErrorAction SilentlyContinue |
-        Select-Object -First 1
-
     $srum = Get-ChildItem -Path $ssFolder -Filter 'SrumECmd.exe' -Recurse -File -ErrorAction SilentlyContinue |
         Select-Object -First 1
-
-    # AppCompatCacheParser
-    if ($appCompat) {
-        Write-Host "  ${Grey}Starting AppCompatCacheParser...${Reset}"
-
-        $cmd = "cd /d `"$($appCompat.Directory.FullName)`" && AppCompatCacheParser.exe --csv ."
-
-        Start-Process cmd.exe `
-            -Verb RunAs `
-            -ArgumentList "/k $cmd"
-    }
-    else {
-        Write-Host "  ${Red}AppCompatCacheParser.exe not found.${Reset}"
-    }
 
     # SrumECmd
     if ($srum) {
@@ -460,6 +440,6 @@ if ($failed.Count -gt 0) {
 }
 
 Write-Host ""
-Write-Host "  ${White}Tools saved to ${Gold}$ssFolder${Reset}"
+Write-Host "  ${White}Tools saved to ${Grey}$ssFolder${Reset}"
 Write-Host "  ${Grey}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${Reset}"
 Write-Host ""
