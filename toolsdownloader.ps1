@@ -56,7 +56,6 @@ $Groups = [ordered]@{
     )
     'Spokwn' = @(
         'https://github.com/spokwn/JournalTrace/releases/latest/download/JournalTrace.exe'
-        'https://github.com/spokwn/BAM-parser/releases/latest/download/BAMParser.exe'
         'https://github.com/spokwn/pcasvc-executed/releases/download/v0.8.7/PcaSvcExecuted.exe'
         'https://github.com/spokwn/ActivitiesCache-execution/releases/download/v0.6.5/ActivitiesCacheParser.exe'
         'https://github.com/spokwn/Replaceparser/releases/latest/download/Replaceparser.exe'
