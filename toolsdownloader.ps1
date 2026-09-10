@@ -404,24 +404,24 @@ if ($ssFolder -eq 'C:\ss1') {
     # Find downloaded tools
     $srum = Get-ChildItem -Path $ssFolder -Filter 'SrumECmd.exe' -Recurse -File -ErrorAction SilentlyContinue |
         Select-Object -First 1
-        
-# SrumECmd
-if ($srum) {
-    Write-Host "  ${Grey}Starting SrumECmd...${Reset}"
 
-    $cmd = "cd /d `"$($srum.Directory.FullName)`" && SrumECmd.exe -f C:\Windows\System32\sru\SRUDB.dat --csv ."
+    # SrumECmd
+    if ($srum) {
+        Write-Host "  ${Grey}Starting SrumECmd...${Reset}"
 
-    Start-Process powershell.exe `
-        -Verb RunAs `
-        -WindowStyle Hidden `
-        -ArgumentList "-NoProfile -WindowStyle Hidden -Command `"$cmd`""
-}
-else {
-    Write-Host "  ${Red}SrumECmd.exe not found.${Reset}"
-}
+        $cmd = "Set-Location -LiteralPath '$($srum.Directory.FullName)'; & '.\SrumECmd.exe' -f 'C:\Windows\System32\sru\SRUDB.dat' --csv '.'"
 
-Write-Host ""
-Write-Host "  ${Green}✓ Automatic tools launched.${Reset}"
+        Start-Process powershell.exe `
+            -Verb RunAs `
+            -WindowStyle Hidden `
+            -ArgumentList "-NoProfile -WindowStyle Hidden -Command `"$cmd`""
+    }
+    else {
+        Write-Host "  ${Red}SrumECmd.exe not found.${Reset}"
+    }
+
+    Write-Host ""
+    Write-Host "  ${Green}✓ Automatic tools launched.${Reset}"
 }
 
 # ── Summary ───────────────────────────────────────────────────────────────────
@@ -435,6 +435,7 @@ if ($failed.Count -gt 0) {
     Write-Host "  ${Red}✗ Failed     : $($failed.Count)${Reset}"
     Write-Host ""
     Write-Host "  ${Red}Failed URLs:${Reset}"
+
     foreach ($f in $failed) {
         Write-Host "    ${Gray}$f${Reset}"
     }
@@ -444,3 +445,4 @@ Write-Host ""
 Write-Host "  ${White}Tools saved to ${Grey}$ssFolder${Reset}"
 Write-Host "  ${Grey}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${Reset}"
 Write-Host ""
+
