@@ -433,6 +433,8 @@ else {
     Write-Host "  ${Red}✗ SrumECmd.exe not found.${Reset}"
 }
 
+}
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 $succeeded = $totalSelected - $failed.Count
 
