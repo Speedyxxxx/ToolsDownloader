@@ -56,8 +56,6 @@ $Groups = [ordered]@{
     )
     'Spokwn' = @(
         'https://github.com/spokwn/JournalTrace/releases/latest/download/JournalTrace.exe'
-        'https://github.com/spokwn/pcasvc-executed/releases/download/v0.8.7/PcaSvcExecuted.exe'
-        'https://github.com/spokwn/ActivitiesCache-execution/releases/download/v0.6.5/ActivitiesCacheParser.exe'
         'https://github.com/spokwn/Replaceparser/releases/latest/download/Replaceparser.exe'
         'https://github.com/spokwn/BamDeletedKeys/releases/latest/download/BamDeletedKeys.exe'
         'https://github.com/spokwn/KernelLiveDumpTool/releases/download/v1.1/KernelLiveDumpTool.exe'
@@ -66,8 +64,6 @@ $Groups = [ordered]@{
         'https://github.com/MeowTonynoh/MeowClientFucker/releases/download/V1.1/MeowClientFucker.exe'
         'https://github.com/MeowTonynoh/MeowResolver/releases/download/v.1.1/MeowResolver.exe'
         'https://github.com/MeowTonynoh/MeowImportsChecker/releases/download/MeowImportsChecker/MeowImportsChecker.exe'
-        'https://github.com/MeowTonynoh/MeowDoomsdayFucker/releases/download/V.1.6/MeowDoomsdayFucker.exe'
-        'https://github.com/MeowTonynoh/MeowNovowareFucker/releases/download/V2/MeowNovowareFucker.exe'
     )
     'Nirsoft' = @(
         'https://www.nirsoft.net/utils/lastactivityview.zip'
@@ -75,7 +71,6 @@ $Groups = [ordered]@{
         'https://www.nirsoft.net/utils/alternatestreamview-x64.zip'
         'https://www.nirsoft.net/utils/clipboardic.zip'
         'https://www.nirsoft.net/utils/networkusageview-x64.zip'
-        'https://www.nirsoft.net/utils/usbdeview-x64.zip'
     )
     'Generic Tools' = @(
         'https://github.com/winsiderss/si-builds/releases/download/4.0.26245.218/systeminformer-build-canary-setup.exe'
@@ -98,11 +93,8 @@ $Groups = [ordered]@{
     'Eric Zimmerman' = @(
         'https://download.ericzimmermanstools.com/net9/PECmd.zip'
         'https://download.ericzimmermanstools.com/net9/SrumECmd.zip'
-        'https://download.ericzimmermanstools.com/net9/RecentFileCacheParser.zip'
-        'https://download.ericzimmermanstools.com/net9/RegistryExplorer.zip'
         'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
         'https://download.ericzimmermanstools.com/AppCompatCacheParser.zip'
-        'https://download.ericzimmermanstools.com/net9/ShellBagsExplorer.zip'
         'https://download.ericzimmermanstools.com/net9/bstrings.zip'
     )
     'Detect' = @(
