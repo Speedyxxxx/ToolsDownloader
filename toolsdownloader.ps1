@@ -422,7 +422,7 @@ else {
 
 Write-Host ""
 Write-Host "  ${Green}✓ Automatic tools launched.${Reset}"
-
+}
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 $succeeded = $totalSelected - $failed.Count
