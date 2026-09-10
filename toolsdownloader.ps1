@@ -91,11 +91,9 @@ $Groups = [ordered]@{
         'https://github.com/Velocidex/velociraptor/releases/download/v0.77.2/velociraptor-v0.77.2-windows-amd64.exe'
     )
     'Eric Zimmerman' = @(
-        'https://download.ericzimmermanstools.com/net9/PECmd.zip'
         'https://download.ericzimmermanstools.com/net9/SrumECmd.zip'
         'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
         'https://download.ericzimmermanstools.com/AppCompatCacheParser.zip'
-        'https://download.ericzimmermanstools.com/net9/bstrings.zip'
     )
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
