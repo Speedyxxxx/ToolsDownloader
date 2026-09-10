@@ -61,7 +61,6 @@ $Groups = [ordered]@{
         'https://github.com/spokwn/Replaceparser/releases/latest/download/Replaceparser.exe'
         'https://github.com/spokwn/BamDeletedKeys/releases/latest/download/BamDeletedKeys.exe'
         'https://github.com/spokwn/KernelLiveDumpTool/releases/download/v1.1/KernelLiveDumpTool.exe'
-        'https://github.com/spokwn/Replaceparser/releases/download/v1.1-recode/ReplaceParser.exe'
     )
     'Tonynoh' = @(
         'https://github.com/MeowTonynoh/MeowClientFucker/releases/download/V1.1/MeowClientFucker.exe'
