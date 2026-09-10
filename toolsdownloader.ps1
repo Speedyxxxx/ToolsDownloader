@@ -405,13 +405,13 @@ if ($ssFolder -eq 'C:\ss1') {
     $srum = Get-ChildItem -Path $ssFolder -Filter 'SrumECmd.exe' -Recurse -File -ErrorAction SilentlyContinue |
         Select-Object -First 1
 
-   # SrumECmd
+# SrumECmd
 if ($srum) {
     Write-Host "  ${Grey}Starting SrumECmd...${Reset}"
 
     $srumDir = $srum.Directory.FullName
 
-    Start-Process powershell.exe `
+    $process = Start-Process powershell.exe `
         -WindowStyle Hidden `
         -ArgumentList @(
             '-NoProfile'
@@ -419,10 +419,18 @@ if ($srum) {
             '-Command'
             "& '$($srum.FullName)' -f 'C:\Windows\System32\sru\SRUDB.dat' --csv '$srumDir'"
         ) `
-        -Wait
+        -Wait `
+        -PassThru
+
+    if ($process.ExitCode -eq 0) {
+        Write-Host "  ${Green}✓ SrumECmd completed successfully.${Reset}"
+    }
+    else {
+        Write-Host "  ${Red}✗ SrumECmd failed. Exit code: $($process.ExitCode)${Reset}"
+    }
 }
 else {
-    Write-Host "  ${Red}SrumECmd.exe not found.${Reset}"
+    Write-Host "  ${Red}✗ SrumECmd.exe not found.${Reset}"
 }
 
 # ── Summary ───────────────────────────────────────────────────────────────────
