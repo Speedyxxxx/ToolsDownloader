@@ -52,7 +52,6 @@ $Groups = [ordered]@{
         'https://github.com/Orbdiff/AmcacheParser/releases/download/v1.0/AmcacheParser.exe'
         'https://github.com/Orbdiff/UserAssistView/releases/download/v1.0/UserAssistView.exe'
         'https://github.com/Orbdiff/USBDetector/releases/download/v1.1/USBDetector.exe'
-        'https://github.com/Orbdiff/MFTParser/releases/download/v0.1/mftparser.exe'
     )
     'Spokwn' = @(
         'https://github.com/spokwn/JournalTrace/releases/latest/download/JournalTrace.exe'
@@ -94,6 +93,7 @@ $Groups = [ordered]@{
         'https://download.ericzimmermanstools.com/net9/SrumECmd.zip'
         'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
         'https://download.ericzimmermanstools.com/AppCompatCacheParser.zip'
+        'https://download.ericzimmermanstools.com/net9/MFTECmd.zip'
     )
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
