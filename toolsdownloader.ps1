@@ -108,6 +108,10 @@ $Groups = [ordered]@{
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
     )
+    'MSC' = @(
+        'https://github.com/piespeas/MSC-Event-Viewer/releases/download/BETA/Event.Viewer.MSC.exe'
+        'https://github.com/ricniclac2/msc-browser-scanner/releases/download/Beta/MSC.Browser.Scanner.Setup.1.0.0.exe'
+    )
 }
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
