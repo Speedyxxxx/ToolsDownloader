@@ -67,7 +67,6 @@ $Groups = [ordered]@{
         'https://www.nirsoft.net/utils/lastactivityview.zip'
         'https://www.nirsoft.net/utils/executedprogramslist.zip'
         'https://www.nirsoft.net/utils/alternatestreamview-x64.zip'
-        'https://www.nirsoft.net/utils/clipboardic.zip'
         'https://www.nirsoft.net/utils/networkusageview-x64.zip'
     )
     'Generic Tools' = @(
