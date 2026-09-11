@@ -45,7 +45,6 @@ $Groups = [ordered]@{
         'https://github.com/Orbdiff/BAMReveal/releases/download/v1.3.1/BAMReveal.exe'
         'https://github.com/Orbdiff/MFT-HardLink/releases/download/v1.2/HardLink.exe'
         'https://github.com/Orbdiff/Fileless/releases/download/v1.3/fileless.exe'
-        'https://github.com/Orbdiff/DPS-Analyzer/releases/download/v1.1/dpsanalyzer.exe'
         'https://github.com/Orbdiff/JARParser/releases/download/v1.2/JARParser.exe'
         'https://github.com/Orbdiff/StringsParser/releases/download/v1.2.1b/stringsparser.1.2.1b.exe'
         'https://github.com/Orbdiff/InjGen/releases/download/fork/InjGen.exe'
@@ -91,9 +90,8 @@ $Groups = [ordered]@{
     )
     'Eric Zimmerman' = @(
         'https://download.ericzimmermanstools.com/net9/SrumECmd.zip'
-        'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
-        'https://download.ericzimmermanstools.com/AppCompatCacheParser.zip'
         'https://download.ericzimmermanstools.com/net9/MFTECmd.zip'
+        'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
     )
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
