@@ -95,9 +95,10 @@ $Groups = [ordered]@{
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
     )
-    'MSC' = @(
+    'Extras' = @(
         'https://github.com/piespeas/MSC-Event-Viewer/releases/download/BETA/Event.Viewer.MSC.exe'
         'https://github.com/ricniclac2/msc-browser-scanner/releases/download/Beta/MSC.Browser.Scanner.Setup.1.0.0.exe'
+        'https://github.com/zedoonvm1/unfinishedtools/releases/download/beta/MarsPixelDumpAnalyzer.exe'
     )
 }
 
