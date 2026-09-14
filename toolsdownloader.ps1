@@ -70,7 +70,6 @@ $Groups = [ordered]@{
         'https://github.com/winsiderss/si-builds/releases/download/4.0.26245.218/systeminformer-build-canary-setup.exe'
         'https://www.voidtools.com/Everything-1.4.1.1029.x64-Setup.exe'
         'https://raw.githubusercontent.com/Speedyxxxx/AltChecker/main/AltChecker.exe'
-        'https://github.com/p1aegg/javaw/releases/download/v1.12/P1AE.Javaw.exe'
         'https://github.com/Inkenal/RegistryScanner/releases/download/main/RegistryScanner.exe'
         'https://github.com/Inkenal/TaskParser/releases/download/main/VigilsTaskParser.exe'
         'https://github.com/Sorted1/StormSS-Fuser-Finder/releases/download/Main/Storm.Fuser.Finder.zip'
