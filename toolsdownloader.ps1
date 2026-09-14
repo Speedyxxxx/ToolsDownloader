@@ -385,6 +385,34 @@ foreach ($groupName in $selectedNames) {
     }
 }
 
+# ── Rename ToolsDownloader++ ───────────────────────────────────────────────────
+$toolsDownloader = Get-ChildItem -Path $ssFolder `
+    -Recurse `
+    -File `
+    -ErrorAction SilentlyContinue |
+    Where-Object {
+        $_.BaseName -eq 'ToolsDownloader++' -and
+        $_.Extension -eq ''
+    } |
+    Select-Object -First 1
+
+if ($toolsDownloader) {
+    $newName = 'ToolsDownloader++.exe'
+
+    try {
+        Rename-Item `
+            -LiteralPath $toolsDownloader.FullName `
+            -NewName $newName `
+            -Force `
+            -ErrorAction Stop
+
+        Write-Host "  ${Green}✓ Renamed ToolsDownloader++ -> ToolsDownloader++.exe${Reset}"
+    }
+    catch {
+        Write-Host "  ${Red}✗ Failed to rename ToolsDownloader++: $($_.Exception.Message)${Reset}"
+    }
+}
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 $succeeded = $totalSelected - $failed.Count
 
