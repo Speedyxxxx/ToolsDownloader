@@ -47,15 +47,12 @@ $Groups = [ordered]@{
         'https://github.com/Orbdiff/Fileless/releases/download/v1.3/fileless.exe'
         'https://github.com/Orbdiff/JARParser/releases/download/v1.2/JARParser.exe'
         'https://github.com/Orbdiff/StringsParser/releases/download/v1.2.1b/stringsparser.1.2.1b.exe'
-        'https://github.com/Orbdiff/InjGen/releases/download/fork/InjGen.exe'
         'https://github.com/Orbdiff/AmcacheParser/releases/download/v1.0/AmcacheParser.exe'
         'https://github.com/Orbdiff/UserAssistView/releases/download/v1.0/UserAssistView.exe'
         'https://github.com/Orbdiff/USBDetector/releases/download/v1.1/USBDetector.exe'
     )
     'Spokwn' = @(
         'https://github.com/spokwn/JournalTrace/releases/latest/download/JournalTrace.exe'
-        'https://github.com/spokwn/Replaceparser/releases/latest/download/Replaceparser.exe'
-        'https://github.com/spokwn/BamDeletedKeys/releases/latest/download/BamDeletedKeys.exe'
         'https://github.com/spokwn/KernelLiveDumpTool/releases/download/v1.1/KernelLiveDumpTool.exe'
     )
     'Tonynoh' = @(
@@ -75,17 +72,16 @@ $Groups = [ordered]@{
         'https://raw.githubusercontent.com/Speedyxxxx/AltChecker/main/AltChecker.exe'
         'https://github.com/horsicq/DIE-engine/releases/download/3.10/die_win64_portable_3.10_x64.zip'
         'https://github.com/deathmarine/Luyten/releases/download/v0.5.4_Rebuilt_with_Latest_depenencies/luyten-0.5.4.exe'
-        'https://github.com/Col-E/Recaf/releases/download/2.21.14/recaf-2.21.14-J8-jar-with-dependencies.jar'
         'https://download.sysinternals.com/files/TCPView.zip'
         'https://github.com/Yamato-Security/hayabusa/releases/download/v3.10.0/hayabusa-3.10.0-win-x64.zip'
         'https://github.com/Inkenal/RegistryScanner/releases/download/main/RegistryScanner.exe'
         'https://github.com/p1aegg/javaw/releases/download/v1.12/P1AE.Javaw.exe'
         'https://github.com/Inkenal/TaskParser/releases/download/main/VigilsTaskParser.exe'
         'https://github.com/Sorted1/StormSS-Fuser-Finder/releases/download/Main/Storm.Fuser.Finder.zip'
-        'https://github.com/Speedyxxxx/MagnetRamCapture/raw/refs/heads/main/MRCv120.exe'
         'https://mh-nexus.de/downloads/HxDPortableSetup.zip'
         'https://download.sysinternals.com/files/Autoruns.zip'
         'https://github.com/Velocidex/velociraptor/releases/download/v0.77.2/velociraptor-v0.77.2-windows-amd64.exe'
+        'https://github.com/zedoonvm1/unfinishedtools/releases/download/beta/MarsPixelDumpAnalyzer.exe'
     )
     'Eric Zimmerman' = @(
         'https://download.ericzimmermanstools.com/net9/SrumECmd.zip'
@@ -95,10 +91,10 @@ $Groups = [ordered]@{
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
     )
-    'Extras' = @(
+    'MSC' = @(
         'https://github.com/piespeas/MSC-Event-Viewer/releases/download/BETA/Event.Viewer.MSC.exe'
         'https://github.com/ricniclac2/msc-browser-scanner/releases/download/Beta/MSC.Browser.Scanner.Setup.1.0.0.exe'
-        'https://github.com/zedoonvm1/unfinishedtools/releases/download/beta/MarsPixelDumpAnalyzer.exe'
+
     )
 }
 
@@ -386,53 +382,6 @@ foreach ($groupName in $selectedNames) {
 
     foreach ($url in $urls) {
         Invoke-FileDownload -Url $url -GroupFolder $groupDir -FailedList $failed
-    }
-}
-
-# ── Automatic forensic tools ──────────────────────────────────────────────────
-if ($ssFolder -eq 'C:\ss1') {
-    Write-Host ""
-    Write-Host "  ${White}Running automatic tools for C:\ss1...${Reset}"
-    Write-Host ""
-
-    # Open shell:recent
-    Write-Host "  ${Grey}Opening Recent Items...${Reset}"
-    Start-Process explorer.exe -ArgumentList 'shell:recent'
-
-    # Find SrumECmd
-    $srum = Get-ChildItem -Path $ssFolder `
-        -Filter 'SrumECmd.exe' `
-        -Recurse `
-        -File `
-        -ErrorAction SilentlyContinue |
-        Select-Object -First 1
-
-    if ($srum) {
-        Write-Host "  ${Grey}Starting SrumECmd...${Reset}"
-
-        $srumDir = $srum.Directory.FullName
-        $srumDb  = 'C:\Windows\System32\sru\SRUDB.dat'
-
-        $process = Start-Process powershell.exe `
-            -WindowStyle Hidden `
-            -ArgumentList @(
-                '-NoProfile'
-                '-ExecutionPolicy', 'Bypass'
-                '-Command'
-                "& '$($srum.FullName)' -f '$srumDb' --csv '$srumDir'"
-            ) `
-            -Wait `
-            -PassThru
-
-        if ($process.ExitCode -eq 0) {
-            Write-Host "  ${Green}✓ SrumECmd completed successfully.${Reset}"
-        }
-        else {
-            Write-Host "  ${Red}✗ SrumECmd failed. Exit code: $($process.ExitCode)${Reset}"
-        }
-    }
-    else {
-        Write-Host "  ${Red}✗ SrumECmd.exe not found.${Reset}"
     }
 }
 
