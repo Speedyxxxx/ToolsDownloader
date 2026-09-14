@@ -86,6 +86,7 @@ $Groups = [ordered]@{
         'https://download.ericzimmermanstools.com/net9/SrumECmd.zip'
         'https://download.ericzimmermanstools.com/net9/MFTECmd.zip'
         'https://download.ericzimmermanstools.com/net9/TimelineExplorer.zip'
+        'https://download.ericzimmermanstools.com/net9/RegistryExplorer.zip'
     )
     'Detect' = @(
         'https://detect.ac/tool/ToolsDownloader++'
