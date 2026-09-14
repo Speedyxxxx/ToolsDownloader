@@ -77,7 +77,6 @@ $Groups = [ordered]@{
         'https://github.com/horsicq/DIE-engine/releases/download/3.10/die_win64_portable_3.10_x64.zip'
         'https://github.com/deathmarine/Luyten/releases/download/v0.5.4_Rebuilt_with_Latest_depenencies/luyten-0.5.4.exe'
         'https://github.com/zedoonvm1/unfinishedtools/releases/download/beta/MarsPixelDumpAnalyzer.exe'
-        'https://github.com/Speedyxxxx/DumpIt/blob/main/DumpIt.exe'
         'https://download.sysinternals.com/files/TCPView.zip'
         'https://github.com/Yamato-Security/hayabusa/releases/download/v3.10.0/hayabusa-3.10.0-win-x64.zip'
         'https://mh-nexus.de/downloads/HxDPortableSetup.zip'
